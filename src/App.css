@@ -9,6 +9,13 @@
   color: #333333;
 }
 
+.card-data {
+  font-size: smaller;
+  right: 0;
+  top: 0;
+  position: fixed;
+
+}
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

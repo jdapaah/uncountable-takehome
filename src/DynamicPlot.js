@@ -1,23 +1,37 @@
 import {
-    XYPlot,
+    FlexibleXYPlot,
     MarkSeries,
     VerticalGridLines,
     HorizontalGridLines,
     XAxis, YAxis
 } from 'react-vis'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { Card, CardContent, Typography } from '@mui/material';
 import { useState } from 'react';
 
+export const prettyPrint = (obj) => {
+    if (obj)
+        return JSON.stringify(obj, null, 2).slice(1, -1)
+    else return ""
+}
 const DatapointCard = ({ title, content }) => {
     return (
-        <Card>
-            <CardContent>
-                <Typography variant="h5">{title}</Typography>
-                <Typography variant="body2">{content}</Typography>
-            </CardContent>
-        </Card>
+        <div className='card-data'>
+            <Card style={{width:400, height: 600}}>
+                <CardContent>
+                    <Typography variant="h5">{title}</Typography>
+                    <Typography variant="body">
+                        <Typography variant='h6'>Inputs</Typography>
+                        <Typography variant="body">
+                            {prettyPrint(content.inputs)}
+                        </Typography>
+                        <Typography variant='h6'>Outputs</Typography>
+                        <Typography variant="body">
+                            {prettyPrint(content.outputs)}
+                        </Typography>
+                    </Typography>
+                </CardContent>
+            </Card>
+        </div>
     );
 };
 
@@ -25,20 +39,25 @@ const gridLineStyle = {
     stroke: '#aaaaaa',
     strokeWidth: 1,
 };
+const DefCardData = {
+    date: new Date(),
+    num: "",
+    fullData: ""
+};
 const DynamicPlot = (props) => {
-    const [cardVisible,setCardVisible] = useState(false)
-    const [cardData, setCardData] = useState({})
+    const [cardVisible, setCardVisible] = useState(false)
+    const [cardData, setCardData] = useState(DefCardData)
     var moreInfoCard;
-
-    if(Object.keys(cardData).length === 0){
-        moreInfoCard = {date: "",
-                        num: "",
-                        fullData:""}
+    function convertDate(d){
+        return `${d.toLocaleString('default', { month: 'short' })} ${d.getDate()}, ${d.getFullYear()}`
     }
-    else{
+    if (Object.keys(cardData).length === 0) {
+        moreInfoCard = DefCardData
+    }
+    else {
         moreInfoCard = <DatapointCard
-        title={cardData.date + ", " + "Experiment #" + cardData.num}
-        content={cardData.fullData.toString()} />
+            title={`${convertDate(cardData.date)}, Experiment #${cardData.num}`}
+            content={cardData.fullData} />
     }
     const updateCard = (datapoint) => {
         console.log(datapoint)
@@ -46,7 +65,7 @@ const DynamicPlot = (props) => {
     }
     return (
         <div>
-            <XYPlot height={500} width={500}>
+            <FlexibleXYPlot height={500} width={500}>
                 <VerticalGridLines style={gridLineStyle} />
                 <HorizontalGridLines style={gridLineStyle} />
                 <XAxis title={props.i1} tickTotal={8} />
@@ -61,7 +80,7 @@ const DynamicPlot = (props) => {
                     onValueMouseOut={() => {
                         setCardVisible(false)
                     }} />
-            </XYPlot>
+            </FlexibleXYPlot>
             {cardVisible && moreInfoCard}
         </div>
     )

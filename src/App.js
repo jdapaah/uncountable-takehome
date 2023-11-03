@@ -21,7 +21,7 @@ function getData(i1, i2, o) {
     ret.push({x: data[key]['inputs'][i1],
               y: data[key]['inputs'][i2],
               color: data[key]['outputs'][o],
-              date: rawDate,
+              date: new Date(rawDate),
               num: key.substring(key.lastIndexOf("_")+1),
               fullData: data[key]})
     if(data[key]['outputs'][o] > max)
