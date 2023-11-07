@@ -4,31 +4,17 @@
 // import FloatingLabel from 'react-bootstrap/FloatingLabel';
 // import Form from 'react-bootstrap/Form';
 
-
-
-// function DropDownMenus() {
-//   return (
-//     <FloatingLabel controlId="floatingSelect" label="Works with selects">
-//       <Form.Select aria-label="Floating label select example">
-//         <option>Open this select menu</option>
-//         <option value="1">One</option>
-//         <option value="2">Two</option>
-//         <option value="3">Three</option>
-//       </Form.Select>
-//     </FloatingLabel>
-//   );
-// }
-function DDM(props){
+function DDM(props) {
     return (
         <div>
             <label>{props.str}</label>
-            <select id="dropdown-basic-button" title="Dropdown button"
-            onChange={(event)=>{props.f(event.target.value)}}>
+            <select id={props.id} title="Dropdown button"
+                onChange={(event) => { props.f(event.target.value) }}>
                 <option value="">{props.str}</option>
                 {props.options.map((option) => (
-                        <option key={option} value={option}>
+                    <option key={option} id={`${props.id}-${option}`} value={option}>
                         {option}
-                        </option>
+                    </option>
                 ))}
             </select>
         </div>
@@ -41,23 +27,30 @@ const DropDownMenus = (props) => {
     var Ooptions = Object.keys(exp['outputs']);
     return (
         <>
-        <DDM options={Ioptions} 
-            str="Set first input"
-            f={(v)=>{
-                if(props.i2 === props.si1(v)){
-                    props.si2('')
-                }
-            }}/>
-        <DDM options={Ioptions} f={(v)=>{
-            if(props.i1 === props.si2(v)){
-                props.si1('')
-            }
-            }}
-            str="Set second input"
+            <DDM options={Ioptions} id={'i1-select'}
+                f={(v) => {
+                    props.si1(v)
+                    if (props.i2 === v) {
+                        document.getElementById('i2-select').value = ''
+                        props.si2('')
+                    }
+                }}
+                str="Set first input"
             />
-        <DDM options={Ooptions} f={props.so}
-            str="Set output type"
-         />
+            <DDM options={Ioptions} id={'i2-select'}
+                f={(v) => {
+                    props.si2(v)
+                    if (props.i1 === v) {
+                        document.getElementById('i1-select').value = ''
+                        props.si1('')
+                    }
+                }}
+                str="Set second input"
+            />
+            <DDM options={Ooptions}
+                f={props.so}
+                str="Set output type"
+            />
         </>
     )
 }
