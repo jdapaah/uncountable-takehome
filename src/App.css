@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #b8b8df;
+  background-color: #ccccd7;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,11 +23,11 @@
   }
 } */
 .App-header {
-  min-height: 30vh;
+  min-height: 20vh;
 }
 
 .App-body {
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 .App-link {
